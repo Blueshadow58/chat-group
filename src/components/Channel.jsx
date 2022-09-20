@@ -1,11 +1,13 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import Message from "./Message";
+import { Button, Form, Stack } from "react-bootstrap";
+import NavBar from "./NavBar";
 
-const Channel = ({ user = null, db = null }) => {
+const Channel = ({ user = null, db = null, signOut = null }) => {
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
 
   const { uid, displayName, photoURL } = user;
 
@@ -29,43 +31,80 @@ const Channel = ({ user = null, db = null }) => {
     }
   }, [db]);
 
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
     setNewMessage(e.target.value);
-  }
+  };
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
 
     if (db) {
-      db.collection('messages').add({
+      db.collection("messages").add({
         text: newMessage,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),        
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid,
         displayName,
         photoURL,
-      })
+      });
     }
+    setNewMessage("");
   };
 
   return (
     <>
-      <ul>
-        {messages?.map((message) => (
-          <li key={message.id}><Message {...message} /></li>
-        ))}
-      </ul>
+      <div>
+        <div
+          style={{
+            height: "7vh",
+          }}
+        >
+          <NavBar user={user} signOut={signOut} />
+        </div>
 
-      <form onSubmit={handleOnSubmit}>
-        <input
-          type="text"
-          value={newMessage}
-          onChange={handleOnChange}
-          placeholder="Ingresa tu mensaje aqui"
-        />
-        <button type="submit" disabled={!newMessage}>
-          Enviar
-        </button>
-      </form>
+        <div
+          style={{
+            height: "83vh",
+            overflow: "auto",
+            paddingInline: "5vh",
+          }}
+        >
+          {messages?.map((message) => (
+            <Message key={message.id} {...message} />
+          ))}
+        </div>
+
+        <div
+          style={{
+            height: "10vh",
+            paddingInline: "5vh",
+          }}
+        >
+          <form
+            style={{ paddingTop: "3vh" }}
+            className="align-center"
+            onSubmit={handleOnSubmit}
+          >
+            <Stack direction="horizontal" gap={3}>
+              <Form.Control
+                type="text"
+                className="me-auto input-channel"
+                value={newMessage}
+                onChange={handleOnChange}
+                placeholder="Ingresa tu mensaje aqui"
+                size="md"
+              />
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={!newMessage}
+                size="md"
+              >
+                Enviar
+              </Button>
+            </Stack>
+          </form>
+        </div>
+      </div>
     </>
   );
 };

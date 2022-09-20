@@ -1,0 +1,25 @@
+.customSideBarInput {
+  background-color: #3c393f !important;
+  color: white !important;
+  border: 0px !important;
+}
+
+.divInitialChannel {
+  background-color: #252329;
+  width: 30px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.initialChannelName {
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.ChannelName {
+  color: #bdbdbd;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}

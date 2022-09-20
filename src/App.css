@@ -1,37 +1,65 @@
-/* .App {
-  text-align: center;
-  background-color: black;
-  
+.input-channel {
+  background-color: #3c393f !important;
+  border: none !important;
+  color: white !important;
 }
 
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.user-name {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: helvetica;
+  color: #828282;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.createdAt {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: helvetica;
+  color: #828282;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  
-  
+.message-text {
+  font-family: helvetica;
+  color: #ffffff !important;
 }
 
-.App-link {
-  color: #61dafb;
+.custom-chat-navbar {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.custom-off-canvas {
+  background-color: #120f13 !important;
+  color: white !important;
+  width: 70% !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
+.custom-card {
+  --bs-card-spacer-y: none !important;
+}
+.custom-card .card-img {
+  width: auto;
+}
+
+.chat-channel-title {
+  font-weight: 700;
+  color: white !important;
+}
+
+.custom-side-bar-user-card {
+  background-color: #0b090c !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  width: 100%;
+  /* display: flex;
+  justify-content: center; */
+  padding-block: 1vh;
+  padding-inline: 2vh;
+}
+
+.logoutColor {
+  color: #eb5757 !important;
+}
+.btn-close {
+  /* color: white !important; */
+  /* background-color: white !important; */
+  filter: invert(100%);
+}
