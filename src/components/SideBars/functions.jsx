@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const initials = (string) => {
   const words = string.split(" ");
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Container, Stack } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -6,29 +6,26 @@ import "./SideBar.css";
 import { BsSearch } from "react-icons/bs";
 import { initials } from "./functions";
 import CreateChannel from "./CreateChannel";
-import { setDoc } from "firebase/firestore";
 import { db } from "../../lib/init-firebase";
-import { doc, onSnapshot, query, collection } from "firebase/firestore";
+import { onSnapshot, query, collection } from "firebase/firestore";
+import { ChannelContext } from "../../context/ChannelContext";
 
-const SeeChannels = (activeChannel) => {
+const SeeChannels = () => {
   const [modalShow, setModalShow] = useState(false);
   const [channels, setChannels] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredChannels, setFilteredChannels] = useState([]);
+  const { changeChannel } = useContext(ChannelContext);
+
+  useEffect(() => {
+    const data = channels.filter(({ channelName }) => {
+      return channelName.toLowerCase().includes(searchText.toLowerCase());
+    });
+    setFilteredChannels(data);
+  }, [channels, searchText]);
 
   const searchInput = (e) => {
     setSearchText(e.target.value);
-
-    if (searchText !== "" && searchText.length > 1) {
-      const data = channels.filter(({ channelName }) => {
-        console.log(channelName);
-        return channelName.toLowerCase().includes(searchText.toLowerCase());
-      });
-
-      setFilteredChannels(data);
-    } else {
-      setFilteredChannels(channels);
-    }
   };
 
   useEffect(() => {
@@ -41,7 +38,7 @@ const SeeChannels = (activeChannel) => {
       setChannels(channels);
       setFilteredChannels(channels);
     });
-  }, [db]);
+  }, []);
 
   // console.log(channels);
   return (
@@ -56,6 +53,7 @@ const SeeChannels = (activeChannel) => {
             >
               New Channel
             </Button>
+
             <CreateChannel
               show={modalShow}
               onHide={() => setModalShow(false)}
@@ -86,7 +84,7 @@ const SeeChannels = (activeChannel) => {
               key={index}
               direction={"horizontal"}
               className="hoverChannel"
-              onClick={() => activeChannel(data.channelName)}
+              onClick={() => changeChannel(data.channelName)}
               gap={3}
             >
               <div className="divInitialChannel text-center ">
@@ -95,6 +93,7 @@ const SeeChannels = (activeChannel) => {
                 </span>
               </div>
               <div className="ChannelName">{data.channelName}</div>
+
               <span className="channelIndicator ms-auto"></span>
             </Stack>
           );
