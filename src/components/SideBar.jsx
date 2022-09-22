@@ -7,11 +7,10 @@ import SeeMembers from "./SideBars/SeeMembers";
 
 const SideBar = ({ user, signOut, handleClose }) => {
   const [sideBar, setSideBar] = useState(false);
+  const changeSideBar = () => setSideBar(!sideBar);
 
-  const changeSideBar = () => {
-    setSideBar(!sideBar);
-    console.log(sideBar);
-  };
+  // const [activeChannel, setActiveChannel] = useState(false);
+  // console.log(activeChannel);
 
   return (
     <>

@@ -17,9 +17,40 @@
   text-transform: uppercase;
 }
 
+/* Modal */
 .ChannelName {
   color: #bdbdbd;
   font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+.modal-content {
+  background-color: #120f13 !important;
+  color: white !important;
+  border-radius: 15px !important;
+  border-bottom: 0px !important;
+}
+.modal-header,
+.modal-footer {
+  border: 0px !important;
+}
+
+.hoverChannel:hover,
+.hoverChannel:hover > span {
+  filter: brightness(1.5);
+  border-radius: 5px;
+  padding-block: 15px;
+
+  transition: 0.4s all ease;
+  cursor: pointer;
+}
+
+.hoverChannel,
+.hoverChannel > span {
+  transition: 0.4s all ease;
+}
+.channelIndicator {
+  width: 5px;
+  background-color: white;
 }
