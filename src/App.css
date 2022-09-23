@@ -49,8 +49,6 @@
   position: absolute !important;
   bottom: 0 !important;
   width: 100%;
-  /* display: flex;
-  justify-content: center; */
   padding-block: 1vh;
   padding-inline: 2vh;
 }

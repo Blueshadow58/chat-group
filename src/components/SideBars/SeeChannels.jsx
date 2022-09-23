@@ -10,12 +10,18 @@ import { db } from "../../lib/init-firebase";
 import { onSnapshot, query, collection } from "firebase/firestore";
 import { ChannelContext } from "../../context/ChannelContext";
 
-const SeeChannels = () => {
+const SeeChannels = ({ changeSideBar }) => {
   const [modalShow, setModalShow] = useState(false);
   const [channels, setChannels] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredChannels, setFilteredChannels] = useState([]);
   const { changeChannel } = useContext(ChannelContext);
+
+  const onHandleClick = (data) => {
+    changeChannel(data);
+
+    changeSideBar();
+  };
 
   useEffect(() => {
     const data = channels.filter(({ channelName }) => {
@@ -35,6 +41,7 @@ const SeeChannels = () => {
       querySnapshot.forEach((doc) => {
         channels.push(doc.data());
       });
+
       setChannels(channels);
       setFilteredChannels(channels);
     });
@@ -84,7 +91,7 @@ const SeeChannels = () => {
               key={index}
               direction={"horizontal"}
               className="hoverChannel"
-              onClick={() => changeChannel(data.channelName)}
+              onClick={() => onHandleClick(data)}
               gap={3}
             >
               <div className="divInitialChannel text-center ">

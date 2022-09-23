@@ -20,7 +20,7 @@ const SideBar = ({ user, signOut, handleClose }) => {
         changeSideBar={changeSideBar}
         handleClose={handleClose}
       />
-      {sideBar ? <SeeMembers /> : <SeeChannels />}
+      {sideBar ? <SeeMembers /> : <SeeChannels changeSideBar={changeSideBar} />}
 
       {/* Footer */}
       <SideBarUserCard user={user} signOut={signOut} />

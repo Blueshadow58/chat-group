@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../lib/init-firebase";
 import Spinner from "react-bootstrap/Spinner";
+import { ChannelContext } from "../../context/ChannelContext";
 
 const CreateChannel = (props) => {
   const [isLoading, setLoading] = useState(false);
-
+  const { user } = useContext(ChannelContext);
+  const { uid, displayName, photoURL } = user;
   const newChannel = async () => {
     const channelName = document.querySelector("[name='channelName']").value;
     const channelDescription = document.querySelector(
@@ -20,6 +22,7 @@ const CreateChannel = (props) => {
       await setDoc(doc(db, "channels", channelName), {
         channelName: channelName,
         channelDescription: channelDescription,
+        members: [{ uid, displayName, photoURL }],
       });
       props.onHide();
       setLoading(false);

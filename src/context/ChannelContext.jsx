@@ -3,20 +3,22 @@ import { createContext, useState } from "react";
 export const ChannelContext = createContext({});
 
 const ChannelProvider = ({ children }) => {
-  const [channel, setChannel] = useState("");
+  const [channel, setChannel] = useState([]);
+  const [user, setUser] = useState([]);
 
-  const changeChannel = (channelName) => {
-    setChannel(channelName);
-    //getChannel(channelName);
+  const changeChannel = (data) => {
+    setChannel(data);
   };
 
-  const getChannel = (data) => {
-    console.log(data);
+  const currentUser = (user) => {
+    setUser(user);
   };
 
   const valueToShare = {
     channel,
+    user,
     changeChannel,
+    currentUser,
   };
   return (
     <ChannelContext.Provider value={valueToShare}>

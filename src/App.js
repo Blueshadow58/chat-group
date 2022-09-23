@@ -1,22 +1,24 @@
 import "./App.css";
 import Button from "./components/Button";
 import { GoogleAuthProvider } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { auth, db } from "./lib/init-firebase";
 import Channel from "./components/Channel";
 import { Container, Row, Col } from "react-bootstrap";
-import ChannelProvider from "./context/ChannelContext";
+import { ChannelContext } from "./context/ChannelContext";
 
 import SideBar from "./components/SideBar";
 
 function App() {
   const [user, setUser] = useState(() => auth.currentUser);
   const [initializing, setInitializing] = useState(true);
+  const { currentUser } = useContext(ChannelContext);
 
   useEffect(() => {
     const unsuscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+        currentUser(user);
       } else {
         setUser(null);
       }
@@ -27,7 +29,7 @@ function App() {
 
     //clean suscription
     return unsuscribe;
-  }, [initializing]);
+  }, [currentUser, initializing]);
 
   const signWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -50,44 +52,42 @@ function App() {
   if (initializing) return "loading...";
 
   return (
-    <ChannelProvider>
-      <section>
-        <Container fluid style={{ height: "100vh" }}>
-          <Row>
-            {user ? (
-              <>
-                {/* SIDEBARD */}
-                <Col
-                  className="d-none d-md-block g-0"
-                  xs={0}
-                  md={3}
-                  style={{
-                    backgroundColor: "#120f13",
-                    color: "white",
-                    position: "relative",
-                  }}
-                >
-                  <SideBar user={user} signOut={signOut} />
-                </Col>
-                {/* CHANNEL */}
-                <Col
-                  className="g-0"
-                  xs={12}
-                  md={9}
-                  style={{
-                    backgroundColor: "#252329",
-                  }}
-                >
-                  <Channel user={user} db={db} signOut={signOut} />
-                </Col>
-              </>
-            ) : (
-              <Button onClick={signWithGoogle}>signWithGoogle</Button>
-            )}
-          </Row>
-        </Container>
-      </section>
-    </ChannelProvider>
+    <section>
+      <Container fluid style={{ height: "100vh" }}>
+        <Row>
+          {user ? (
+            <>
+              {/* SIDEBARD */}
+              <Col
+                className="d-none d-md-block g-0"
+                xs={0}
+                md={3}
+                style={{
+                  backgroundColor: "#120f13",
+                  color: "white",
+                  position: "relative",
+                }}
+              >
+                <SideBar user={user} signOut={signOut} />
+              </Col>
+              {/* CHANNEL */}
+              <Col
+                className="g-0"
+                xs={12}
+                md={9}
+                style={{
+                  backgroundColor: "#252329",
+                }}
+              >
+                <Channel user={user} db={db} signOut={signOut} />
+              </Col>
+            </>
+          ) : (
+            <Button onClick={signWithGoogle}>signWithGoogle</Button>
+          )}
+        </Row>
+      </Container>
+    </section>
   );
 }
 

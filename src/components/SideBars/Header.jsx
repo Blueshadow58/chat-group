@@ -22,7 +22,7 @@ const SideBarHeader = ({ sideBar, changeSideBar, handleClose }) => {
       </div>
       <div className="ms-auto">
         <Button
-          className="bg-transparent border-0 .d-block .d-sm-none"
+          className="bg-transparent border-0 .d-block .d-sm-none d-md-none "
           onClick={() => handleClose()}
         >
           <BsXLg />

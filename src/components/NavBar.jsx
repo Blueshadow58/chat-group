@@ -1,19 +1,17 @@
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { useContext, useState } from "react";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Offcanvas from "react-bootstrap/Offcanvas";
 import { List } from "react-bootstrap-icons";
 import SideBar from "./SideBar";
+import { ChannelContext } from "../context/ChannelContext";
 
 function NavBar({ user = null, signOut = null }) {
+  const { channel } = useContext(ChannelContext);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   return (
     <>
       <Navbar expand={show} className=" mb-3 custom-chat-navbar ">
@@ -27,7 +25,7 @@ function NavBar({ user = null, signOut = null }) {
           </Navbar.Toggle>
 
           <Navbar.Brand className="ms-auto chat-channel-title pt-2">
-            Chat-Group-Proyect
+            {channel.channelName}
           </Navbar.Brand>
 
           <Navbar.Offcanvas
@@ -39,7 +37,9 @@ function NavBar({ user = null, signOut = null }) {
             {/* <Offcanvas.Header closeButton>
               <Offcanvas.Title>Channels</Offcanvas.Title>
             </Offcanvas.Header> */}
+
             <SideBar user={user} signOut={signOut} handleClose={handleClose} />
+
             {/* <Offcanvas.Body> */}
             {/* <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="#action1">Home</Nav.Link>
