@@ -1,79 +1,134 @@
-import React, { useRef, useState } from "react";
-import { Button, Form, InputGroup, Overlay, Popover } from "react-bootstrap";
+import React, { useContext } from "react";
+import { db } from "../../lib/init-firebase";
+import {
+  Button,
+  Form,
+  InputGroup,
+  OverlayTrigger,
+  Popover,
+  Stack,
+} from "react-bootstrap";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  endAt,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAt,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useState } from "react";
+import { ChannelContext } from "../../context/ChannelContext";
 
-const AddMember = () => {
-  const [show, setShow] = useState(false);
-  //   const target = useRef(null);
-  const [target, setTarget] = useState(null);
-  const ref = useRef(null);
+const AddMember = ({ channel }) => {
+  const { user } = useContext(ChannelContext);
+  const [listMembers, setListMembers] = useState([]);
 
-  const handleClick = (event) => {
-    setShow(!show);
-    setTarget(event.target);
+  const getMembers = async (e) => {
+    try {
+      e.preventDefault();
+
+      const nameUser = e.target.elements.nameUser.value;
+      const ref = collection(db, "users");
+      const q = query(
+        ref,
+        where("uid", "!=", user.uid),
+        orderBy("uid"),
+        limit(5),
+        startAt(nameUser),
+        endAt(nameUser + "\uf8ff")
+      );
+
+      const querySnapshot = await getDocs(q);
+      const members = [];
+      await querySnapshot.forEach((doc) => {
+        members.push(doc.data());
+      });
+      setListMembers(members);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return (
-    // <>
-    //   <Button variant="danger" ref={target} onClick={() => setShow(!show)}>
-    //     Click me to see
-    //   </Button>
-    //   <Overlay target={target.current} show={show} placement="right">
-    //     {({ placement, arrowProps, show: _show, popper, ...props }) => (
-    //       <div
-    //         {...props}
-    //         style={{
-    //           position: "absolute",
-    //           backgroundColor: "rgba(255, 100, 100, 0.85)",
-    //           padding: "2px 10px",
-    //           color: "white",
-    //           borderRadius: 3,
-    //           ...props.style,
-    //         }}
-    //       >
-    //         <>
-    //           <Popover>
-    //             <Popover.Header className="text-dark" as="h3">
-    //               yasghashjdas
-    //             </Popover.Header>
-    //             <Popover.Body>
-    //               <InputGroup className="">
-    //                 <Form.Control placeholder="example@gmail.com" />
-    //                 <Button variant="primary">Add</Button>
-    //               </InputGroup>
-    //             </Popover.Body>
-    //           </Popover>
-    //         </>
-    //       </div>
-    //     )}
-    //   </Overlay>
-    // </>
-    <div ref={ref}>
-      <Button size="sm" onClick={handleClick}>
-        Add Member
-      </Button>
+  const addMemberBtn = async (member) => {
+    const { channelName } = channel;
+    const channelRef = doc(db, "channels", channelName);
+    // const memberData = {
+    //   displayName: member.displayName,
+    //   uid: member.uid,
+    //   photoURL: member.photoURL,
+    // };
 
-      <Overlay
-        show={show}
-        target={target}
-        placement="bottom"
-        container={ref}
-        // style={{ position: "absolute" }}
-        // containerPadding={20}
-      >
-        <Popover>
-          <Popover.Header className="text-dark" as="h3">
-            New channel member
-            {/* <Button onClick={() => setShow(!show)}>sdfsdf</Button> */}
-          </Popover.Header>
-          <Popover.Body>
-            <InputGroup className="">
-              <Form.Control placeholder="example@gmail.com" />
-              <Button variant="primary">Add</Button>
-            </InputGroup>
-          </Popover.Body>
-        </Popover>
-      </Overlay>
-    </div>
+    // console.log(memberData);
+
+    try {
+      await updateDoc(channelRef, {
+        members: arrayUnion(member),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const popover = (
+    <Popover>
+      <Popover.Header as="h3">Add Member</Popover.Header>
+      <Popover.Body>
+        <Form className="pb-3" onSubmit={(e) => getMembers(e)}>
+          <InputGroup className="">
+            <Form.Control
+              placeholder="Name"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              name="nameUser"
+            />
+            <Button variant="primary" id="button-addon2" type="submite">
+              Search
+            </Button>
+          </InputGroup>
+        </Form>
+
+        {listMembers ? (
+          listMembers.map((member) => {
+            return (
+              <Stack
+                key={member.uid}
+                direction="horizontal"
+                gap={3}
+                className="pb-2"
+              >
+                <div>
+                  <img
+                    src={member.photoURL}
+                    alt="avatar 1"
+                    style={{ width: "45px", height: "100%" }}
+                    className="rounded"
+                  />
+                </div>
+                <div>
+                  <span className="text-white h6">{member.displayName}</span>
+                </div>
+                <div className="ms-auto">
+                  <Button onClick={() => addMemberBtn(member)}>Add</Button>
+                </div>
+              </Stack>
+            );
+          })
+        ) : (
+          <>no tan</>
+        )}
+      </Popover.Body>
+    </Popover>
+  );
+
+  return (
+    <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
+      <Button variant="primary">Add member</Button>
+    </OverlayTrigger>
   );
 };
 

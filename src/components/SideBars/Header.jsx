@@ -6,12 +6,16 @@ const SideBarHeader = ({ sideBar, changeSideBar, handleClose }) => {
   return (
     <Stack className="p-3" direction="horizontal" gap={3}>
       <div>
-        <Button
-          className="bg-transparent border-0 .d-block .d-sm-none"
-          onClick={() => changeSideBar()}
-        >
-          <BsChevronLeft />
-        </Button>
+        {sideBar ? (
+          <Button
+            className="bg-transparent border-0 .d-block .d-sm-none "
+            onClick={() => changeSideBar()}
+          >
+            <BsChevronLeft />
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
       <div>
         {sideBar ? (

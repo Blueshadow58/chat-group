@@ -54,3 +54,11 @@
   width: 5px;
   background-color: white;
 }
+
+.popover,
+.popover-header {
+  padding-bottom: 0px !important;
+  color: white;
+  background-color: #252329 !important;
+  max-width: 300px !important;
+}

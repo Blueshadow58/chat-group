@@ -8,6 +8,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { ChannelContext } from "./context/ChannelContext";
 
 import SideBar from "./components/SideBar";
+import { setDoc, doc } from "firebase/firestore";
 
 function App() {
   const [user, setUser] = useState(() => auth.currentUser);
@@ -19,6 +20,12 @@ function App() {
       if (user) {
         setUser(user);
         currentUser(user);
+        const userData = {
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        };
+        setDoc(doc(db, "users", userData.uid), userData);
       } else {
         setUser(null);
       }

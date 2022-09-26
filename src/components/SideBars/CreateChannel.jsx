@@ -10,7 +10,7 @@ import { ChannelContext } from "../../context/ChannelContext";
 const CreateChannel = (props) => {
   const [isLoading, setLoading] = useState(false);
   const { user } = useContext(ChannelContext);
-  const { uid, displayName, photoURL } = user;
+  const { uid } = user;
   const newChannel = async () => {
     const channelName = document.querySelector("[name='channelName']").value;
     const channelDescription = document.querySelector(
@@ -22,7 +22,7 @@ const CreateChannel = (props) => {
       await setDoc(doc(db, "channels", channelName), {
         channelName: channelName,
         channelDescription: channelDescription,
-        members: [{ uid, displayName, photoURL }],
+        members: [uid],
       });
       props.onHide();
       setLoading(false);

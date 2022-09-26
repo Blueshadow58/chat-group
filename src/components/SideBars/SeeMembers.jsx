@@ -2,7 +2,14 @@ import React, { useContext, useEffect } from "react";
 import { Container, Spinner, Stack } from "react-bootstrap";
 import { ChannelContext } from "../../context/ChannelContext";
 import { db } from "../../lib/init-firebase";
-import { onSnapshot, doc } from "firebase/firestore";
+import {
+  onSnapshot,
+  doc,
+  collection,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { useState } from "react";
 import AddMember from "./AddMember";
 
@@ -11,11 +18,29 @@ const SeeMembers = () => {
   const [members, setMembers] = useState(false);
 
   useEffect(() => {
-    const query = doc(db, "channels", channel.channelName);
-    onSnapshot(query, (doc) => {
-      setMembers(doc.data().members);
+    const qChannels = query(
+      collection(db, "channels"),
+      where("channelName", "==", channel.channelName)
+    );
+    onSnapshot(qChannels, (querySnapshot) => {
+      const chUsers = [];
+      querySnapshot.forEach((doc) => {
+        chUsers.push(...doc.data().members);
+      });
+      filterUsers(chUsers);
     });
   }, [channel.channelName]);
+
+  const filterUsers = (chUsers) => {
+    const qUsers = query(collection(db, "users"), where("uid", "in", chUsers));
+    onSnapshot(qUsers, (querySnapshot) => {
+      const allUsers = [];
+      querySnapshot.forEach((doc) => {
+        allUsers.push(doc.data());
+      });
+      setMembers(allUsers);
+    });
+  };
 
   return (
     <Container className="px-4">
@@ -30,7 +55,7 @@ const SeeMembers = () => {
               <span className="h5">Members</span>
             </div>
             <div className="ms-auto">
-              <AddMember />
+              <AddMember channel={channel} />
             </div>
           </Stack>
         </div>

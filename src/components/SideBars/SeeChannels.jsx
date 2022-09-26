@@ -7,7 +7,13 @@ import { BsSearch } from "react-icons/bs";
 import { initials } from "./functions";
 import CreateChannel from "./CreateChannel";
 import { db } from "../../lib/init-firebase";
-import { onSnapshot, query, collection } from "firebase/firestore";
+import {
+  onSnapshot,
+  query,
+  collection,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { ChannelContext } from "../../context/ChannelContext";
 
 const SeeChannels = ({ changeSideBar }) => {
@@ -15,7 +21,7 @@ const SeeChannels = ({ changeSideBar }) => {
   const [channels, setChannels] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredChannels, setFilteredChannels] = useState([]);
-  const { changeChannel } = useContext(ChannelContext);
+  const { changeChannel, user } = useContext(ChannelContext);
 
   const onHandleClick = (data) => {
     changeChannel(data);
@@ -35,7 +41,10 @@ const SeeChannels = ({ changeSideBar }) => {
   };
 
   useEffect(() => {
-    const q = query(collection(db, "channels"));
+    const q = query(
+      collection(db, "channels"),
+      where("members", "array-contains", user.uid)
+    );
     onSnapshot(q, (querySnapshot) => {
       const channels = [];
       querySnapshot.forEach((doc) => {
@@ -45,7 +54,7 @@ const SeeChannels = ({ changeSideBar }) => {
       setChannels(channels);
       setFilteredChannels(channels);
     });
-  }, []);
+  }, [user.displayName, user.photoURL, user.uid]);
 
   // console.log(channels);
   return (
