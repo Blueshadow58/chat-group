@@ -1,0 +1,13 @@
+.chatList {
+  height: 83vh;
+  overflow: auto;
+  padding-inline: 5vh;
+  /* flex-direction: column-reverse; */
+
+  scroll-behavior: smooth;
+}
+
+.inputMessagesSection {
+  height: 10vh;
+  padding-inline: 5vh;
+}

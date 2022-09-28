@@ -23,6 +23,7 @@
   font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
+  word-break: break-all;
 }
 
 .modal-content {

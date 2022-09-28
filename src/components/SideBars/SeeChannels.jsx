@@ -25,7 +25,8 @@ const SeeChannels = ({ changeSideBar }) => {
 
   const onHandleClick = (data) => {
     changeChannel(data);
-
+    const divChatList = document.getElementById("chatList");
+    divChatList.scrollTop = divChatList.scrollHeight;
     changeSideBar();
   };
 
