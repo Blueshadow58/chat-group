@@ -1,5 +1,5 @@
 
-# Simple Quiz Aplication 
+# Group-chat with channels
 
 This is a group chat aplication in realtime using firestore, you can create different
 channels and add your friends to chat, the property of the channels are from its 
