@@ -5,10 +5,12 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
+import Perfil from "./Perfil";
+import { useState } from "react";
 
 function SideBarUserCard({ user, signOut }) {
   const { uid, displayName, photoURL } = user;
-
+  const [modalShow, setModalShow] = useState(false);
   return (
     <Container className="g-0 " fluid>
       <Stack
@@ -27,12 +29,13 @@ function SideBarUserCard({ user, signOut }) {
         <div className="">
           <span className="user-name align-middle">{displayName}</span>
         </div>
-        <div className="ms-auto">{dropDown(signOut)}</div>
+        <div className="ms-auto">{dropDown(signOut, setModalShow)}</div>
       </Stack>
+      <Perfil show={modalShow} onHide={() => setModalShow(false)} user={user} />
     </Container>
   );
 }
-const dropDown = (signOut) => {
+const dropDown = (signOut, setModalShow) => {
   return (
     <Dropdown>
       <DropdownButton
@@ -42,9 +45,10 @@ const dropDown = (signOut) => {
         menuVariant="dark"
         title=""
       >
-        <Dropdown.Item eventKey="1">
+        <Dropdown.Item eventKey="1" onClick={() => setModalShow(true)}>
           <FaRegUserCircle /> <span className="ps-1">Perfil</span>
         </Dropdown.Item>
+
         <Dropdown.Divider />
         <Dropdown.Item eventKey="2" onClick={signOut} className="logoutColor ">
           <FaSignOutAlt /> <span className="ps-1">Logout</span>
