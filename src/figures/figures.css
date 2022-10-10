@@ -1,0 +1,18 @@
+#figure1 {
+  width: 1000px;
+  height: 1800px;
+  background-color: #0b090c;
+  position: fixed;
+  clip-path: polygon(100% 0, 0 100%, 7% 34%);
+  z-index: -2 !important;
+}
+
+#figure2 {
+  width: 1000px;
+  height: 1800px;
+  transform: scaleX(-1);
+  background-color: #252329;
+  position: fixed;
+  clip-path: polygon(100% 0, 0 100%, 7% 34%);
+  z-index: -1 !important;
+}

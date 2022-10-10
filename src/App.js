@@ -1,5 +1,7 @@
 import "./App.css";
-import Button from "./components/Button";
+
+import Button from "react-bootstrap/Button";
+
 import { GoogleAuthProvider } from "firebase/auth";
 import { useState, useEffect, useContext } from "react";
 import { auth, db } from "./lib/init-firebase";
@@ -9,6 +11,7 @@ import { ChannelContext } from "./context/ChannelContext";
 
 import SideBar from "./components/SideBar";
 import { setDoc, doc } from "firebase/firestore";
+import Login from "./components/Login";
 
 function App() {
   const [user, setUser] = useState(() => auth.currentUser);
@@ -59,10 +62,10 @@ function App() {
   if (initializing) return "loading...";
 
   return (
-    <section>
-      <Container fluid style={{ height: "100vh" }}>
-        <Row>
-          {user ? (
+    <section style={{ height: "100vh" }}>
+      {user ? (
+        <Container fluid>
+          <Row>
             <>
               {/* SIDEBARD */}
               <Col
@@ -89,11 +92,11 @@ function App() {
                 <Channel user={user} db={db} signOut={signOut} />
               </Col>
             </>
-          ) : (
-            <Button onClick={signWithGoogle}>signWithGoogle</Button>
-          )}
-        </Row>
-      </Container>
+          </Row>
+        </Container>
+      ) : (
+        <Login signWithGoogle={signWithGoogle} />
+      )}
     </section>
   );
 }

@@ -1,4 +1,11 @@
 body {
+  background-color: #120f13 !important;
+
+  /*
+  252329
+  120F13
+  0B090C 
+  */
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
