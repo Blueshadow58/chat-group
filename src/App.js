@@ -1,7 +1,5 @@
 import "./App.css";
 
-import Button from "react-bootstrap/Button";
-
 import { GoogleAuthProvider } from "firebase/auth";
 import { useState, useEffect, useContext } from "react";
 import { auth, db } from "./lib/init-firebase";

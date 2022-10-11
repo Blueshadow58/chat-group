@@ -1,15 +1,14 @@
-import { Col, Row, Container, Stack, Button } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
-import { ChevronDown } from "react-bootstrap-icons";
+import { Container, Stack } from "react-bootstrap";
+
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
+
 import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
 import Perfil from "./Perfil";
 import { useState } from "react";
 
 function SideBarUserCard({ user, signOut }) {
-  const { uid, displayName, photoURL } = user;
+  const { displayName, photoURL } = user;
   const [modalShow, setModalShow] = useState(false);
   return (
     <Container className="g-0 " fluid>

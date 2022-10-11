@@ -2,14 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Container, Spinner, Stack } from "react-bootstrap";
 import { ChannelContext } from "../../context/ChannelContext";
 import { db } from "../../lib/init-firebase";
-import {
-  onSnapshot,
-  doc,
-  collection,
-  where,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { onSnapshot, collection, where, query } from "firebase/firestore";
 import { useState } from "react";
 import AddMember from "./AddMember";
 

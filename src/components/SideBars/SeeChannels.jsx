@@ -7,13 +7,7 @@ import { BsSearch } from "react-icons/bs";
 import { initials } from "./functions";
 import CreateChannel from "./CreateChannel";
 import { db } from "../../lib/init-firebase";
-import {
-  onSnapshot,
-  query,
-  collection,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { onSnapshot, query, collection, where } from "firebase/firestore";
 import { ChannelContext } from "../../context/ChannelContext";
 
 const SeeChannels = ({ changeSideBar }) => {

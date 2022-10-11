@@ -1,6 +1,5 @@
 import React from "react";
 import { formatRelative } from "date-fns";
-import { Row, Col, Container, Card } from "react-bootstrap";
 
 const Message = ({
   createdAt = null,
